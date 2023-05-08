@@ -1,0 +1,10 @@
+# Railway environment configuration file
+
+# Add environment variables
+[env]
+NODE_ENV = "production"
+PORT = 3000
+
+# Add start command
+[start]
+command = "npm start"

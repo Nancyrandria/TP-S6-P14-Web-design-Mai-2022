@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function login(){
+            let objLogin = {
+                "login": document.getElementById("user").value,
+                "password": document.getElementById("user").value
+            }
+            fetch('https://intelligence-artificielle-api.up.railway.app/login', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(objLogin)
+                }).then((data) => data.json()).then((result) => {
+                    if(result == 1){
+                        window.location.href = 'backOffice.html';                        
+                    }else{
+                        alert('error');
+                    }
+            });
+        }
+    </script>
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="gradient__bg">
+        <div class="gpt3__header section__padding" id="home" style="flex-direction: row;">
+            <div class="gpt3__header-content">
+                <h1 class="gradient__text">Login</h1>
+                <div class="gpt3__header-content__input"><input id="user" type="user" placeholder="Utilisateur"></div>
+                <div class="gpt3__header-content__input"><input id="password" type="password" placeholder="Mot de passe"></div>
+                <div class="gpt3__header-content__input"><button type="button" onclick="login()">Se connecter</button></div>
+            </div>
+            <div class="gpt3__header-image"><img src="./img/tete.png" alt="tete" /></div>
+        </div>
+    </div>
+</body>
+
+</html>

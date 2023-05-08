@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <title>Insertion Temoignage</title>
+    <script>
+        function insertTemoin() {
+            let objTemoin = {
+                "auteur": document.getElementById("auteur").value,
+                "commentaire": document.getElementById("commentaire").value
+            }
+            fetch('https://intelligence-artificielle-api.up.railway.app/temoignage', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(objTemoin)
+            }).then((data) => data.json()).then((result) => {
+                if (result && result.idtemoignage) {
+                    window.location.href = 'listeTemoin.html';
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="gradient__bg">
+        <div class="gpt3__navbar">
+            <div class="gpt3__navbar-links">
+                <div class="gpt3__navbar-links_container">
+                    <p><a href="backOffice.html" class="linkbackOffice">Retour</a></p>
+                    <p><a href="listeTemoin.html" class="linkbackOffice">Liste Temoignage</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="gpt3__header section__padding" id="home">
+            <div class="gpt3__header-content">
+                <h1 class="gradient__text">Inserion Temoignage</h1>
+                <div class="gpt3__header-content__input"><input id="auteur" type="text" name="auteur"
+                        placeholder="auteur"></div>
+                <textarea name="commentaire" id="commentaire" placeholder="commentaire" class="form-control" rows="3"
+                    style="background: #031B34;border: 2px solid #031B34;margin-top: 30px;"></textarea>
+                <div class="gpt3__header-content__input"><button type="button"
+                        onclick="insertTemoin()">Enregistrer</button></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

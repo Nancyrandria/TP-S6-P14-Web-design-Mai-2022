@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <title>Update Actualite</title>
+        <script>
+             // Obtenir valeur Parametre url dans la page
+             const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const idactualite = urlParams.get('idactualite');
+            window.onload = function () {
+                let elAppli = document.getElementById("idapplication");
+                fetch('https://intelligence-artificielle-api.up.railway.app/applications', {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                    }).then((data) => data.json()).then((result) => {
+                        result.forEach((appli) => {
+                            let newAppli = "<option value='";
+                            newAppli += `${appli.idapplication}'>`;
+                            newAppli += `${appli.application}`;
+                            newAppli += "</option>";
+                            elAppli.innerHTML += newAppli;
+                        });
+                });
+
+                let elActu = document.getElementById("actu");
+                fetch(
+                    "https://intelligence-artificielle-api.up.railway.app/actualite/listeactu",
+                    {
+                        method: "GET",
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "application/json",
+                        },
+                    }
+                )
+                .then((data) => data.json()).then((result) => {                   
+                    result.forEach((actu) => {
+                        if(idactualite == actu.idactualite){
+                            document.getElementById("idapplication").value = actu.application.idapplication;
+                            document.getElementById("titre").value = actu.titre;
+                            document.getElementById("description").value = actu.description;
+                            document.getElementById("status").value = actu.status;
+                        }
+                    });
+                });
+            };
+            
+        
+            function updateActu() {
+                let objActu = {
+                    "idapplication": document.getElementById("idapplication").value,
+                    "titre": document.getElementById("titre").value,
+                    "description": document.getElementById("description").value,
+                    "status": document.getElementById("status").value
+                }
+                fetch('https://intelligence-artificielle-api.up.railway.app/actualite/' + idactualite, {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(objActu)
+                }).then((data) => data.json()).then((result) => {
+                    if (result && result.idactualite) {
+                        window.location.href = 'listeActu.html';
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div class="gradient__bg">
+            <div class="gpt3__navbar">
+                <div class="gpt3__navbar-links">
+                    <div class="gpt3__navbar-links_container">
+                        <p><a href="backOffice.html" class="linkbackOffice">Retour</a></p>
+                        <p><a href="listeActu.html" class="linkbackOffice">Liste Actualité</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="gpt3__header section__padding" id="home">
+                <div class="gpt3__header-content">
+                    <h1 class="gradient__text">Update Actualite</h1>
+                    <div class="gpt3__header-content__input">
+                        <select id="idapplication" name="idapplication" class="form-control" style="background: #031B34;border: 2px solid #031B34;"></select>
+                    </div>
+                    <div class="gpt3__header-content__input"><input type="text" name="titre" id="titre"></div>
+                    <textarea name="description" id="description" class="form-control" rows="3" style="background: #031B34;border: 2px solid #031B34;margin-top: 30px;"></textarea>
+                    <div class="gpt3__header-content__input"></div>
+                        <select id="status" name="status" class="form-control" style="background: #031B34;border: 2px solid #031B34;">
+                            <option value="0">En attente</option>
+                            <option value="1">Publier</option>
+                        </select>
+                    </div>
+                    <div class="gpt3__header-content__input"><button type="button" onclick="updateActu()">Enregistrer</button></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

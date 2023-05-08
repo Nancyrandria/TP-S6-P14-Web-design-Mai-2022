@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="table.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <title>Liste Temoignage</title>
+    <script>
+        window.onload = function () {
+            let elTem = document.getElementById("temoignage");
+            fetch('https://intelligence-artificielle-api.up.railway.app/temoignage/listetemoignage', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then((data) => data.json()).then((result) => {
+                result.forEach(tem => {
+                    let newRow = "<tr>";
+                    newRow += `<td>${(tem.auteur) ? tem.auteur : ''}</td>`;
+                    newRow += `<td>${(tem.commentaire) ? tem.commentaire : ''}</td>`;
+                    newRow += "<td><a class='btn btn-danger' onclick='deleteTem(" + tem.idtemoignage + ")'>supprimer</a></td>";
+                    newRow += "</tr>";
+                    elTem.innerHTML += newRow;
+                });
+            });
+        }
+        function deleteTem(idtemoignage) {
+            fetch('https://intelligence-artificielle-api.up.railway.app/temoignage/' + idtemoignage, {
+                method: 'DELETE'
+            }).then((result) => {
+                window.location.reload();
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="gradient__bg__backOffice">
+        <div class="gpt3__navbar" style="width: 30vw;">
+            <div class="gpt3__navbar-links">
+                <div class="gpt3__navbar-links_container">
+                    <p><a href="backOffice.html" class="linkbackOffice">Retour</a></p>
+                    <p><a href="insertTemoin.html" class="linkbackOffice">Insertion Temoignage</a></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h1 class="gradient__text">Liste Temoignage</h1>
+            <table style="margin: 0;">
+                <thead>
+                    <tr style="color: #1d809f;background-color: white;text-align: center;">
+                        <th>Auteur</th>
+                        <th>Commentaire</th>
+                        <th>Supprimer</th>
+                    </tr>
+                </thead>
+                <tbody id="temoignage">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

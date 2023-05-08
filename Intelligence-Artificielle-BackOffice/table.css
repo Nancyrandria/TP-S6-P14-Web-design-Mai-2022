@@ -1,0 +1,15 @@
+table {
+    width: 75vw;
+    margin: 10% auto;
+    box-shadow: 0px 0px 10px rgb(159, 153, 153);
+}
+
+td {
+    background-color: whitesmoke;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="table.css" />
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <title>Liste Actualite</title>
+    <script>
+        window.onload = function () {
+            let elActu = document.getElementById("actu");
+            fetch(
+                "https://intelligence-artificielle-api.up.railway.app/actualite/listeactu",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+                .then((data) => data.json()).then((result) => {
+                    result.forEach((actu) => {
+                        let newActu = "<tr>";
+                        newActu += `<td>${actu.application && actu.application.application? actu.application.application: ""}</td>`;
+                        newActu += `<td>${actu.titre ? actu.titre : ""}</td>`;
+                        newActu += `<td>${actu.description ? actu.description : ""}</td>`;
+                        newActu += `<td>${actu.status ? "<span class='badge badge-success'>Publier</span>" : "<span class='badge badge-danger'>En attente</span>"}</td>`;
+                        newActu += "<td><a class='btn btn-primary' href='updateActu.html?idactualite="+actu.idactualite +"'>modifier</a></td>";
+                        newActu += "<td><a class='btn btn-danger' onclick='deleteActu("+actu.idactualite + ")'>supprimer</a></td>";
+                        newActu += "</tr>";
+                        elActu.innerHTML += newActu;
+                    });
+                });
+        };
+        function deleteActu(idactualite) {
+            fetch(
+                "https://intelligence-artificielle-api.up.railway.app/actualite/"+idactualite,
+                {
+                    method: "DELETE",
+                }).then((result) => {
+                    window.location.reload();
+                });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="gradient__bg__backOffice">
+        <div class="gpt3__navbar">
+            <div class="gpt3__navbar-links">
+                <div class="gpt3__navbar-links_container">
+                    <p>
+                        <a href="backOffice.html" style="font-weight: 700; font-size: 21px; color: white;">Retour</a>
+                    </p>
+                    <p>
+                        <a href="insertActu.html" style="font-weight: 700; font-size: 21px; color: white;">Insertion Actualité</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h1 class="gradient__text">Liste Actualite</h1>
+            <table>
+                <thead>
+                    <tr style="color: #1d809f;background-color: white;text-align: center;">
+                        <th>Application</th>
+                        <th>Titre</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Mettre A jour</th>
+                        <th>Supprimer</th>
+                    </tr>
+                </thead>
+                <tbody id="actu"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
